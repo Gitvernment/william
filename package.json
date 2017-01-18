@@ -1,0 +1,21 @@
+{
+  "name": "william",
+  "version": "0.1.0",
+  "dependencies": {
+    "botkit": "^0.4.1",
+    "pg-promise": "^5.3.5",
+    "q": "^1.4.1",
+    "winston": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.1.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.6.0"
+  },
+  "scripts": {
+    "test": "./local.sh",
+    "lint": "eslint william.js"
+  }
+}
