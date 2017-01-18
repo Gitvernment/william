@@ -27,7 +27,6 @@ controller.hears([/(what can you)?\w?tell me about (bill)?\w?([a-zA-Z]{2}[\d]{1,
 
     db.result(query, args)
     .then((data) => {
-        acknowledgeUserRequest(slackBot, slackMessage);
         const bill = data.rows[0];
         log.info(`data received: ${JSON.stringify(bill, null, 4)}`);
         const billAttachment = {
@@ -53,7 +52,7 @@ controller.hears([/(what can you)?\w?tell me about (bill)?\w?([a-zA-Z]{2}[\d]{1,
         }
 
         if( bill.coauthors ){
-            billAttachment[fields].push({
+            billAttachment['fields'].push({
                 "title": "Coauthors",
                 "value": bill.coauthors.join(', '),
                 "short": false
@@ -61,18 +60,20 @@ controller.hears([/(what can you)?\w?tell me about (bill)?\w?([a-zA-Z]{2}[\d]{1,
         }
 
         if( bill.sponsors ){
-            billAttachment[fields].push({
+            billAttachment['fields'].push({
                 "title": "Sponsors",
                 "value": bill.sponsors.join(', '),
                 "short": false
             });
         }
 
+        acknowledgeUserRequest(slackBot, slackMessage);
         bot.reply(slackMessage, { attachments: [billAttachment] }, (err, resp) => { if( err ){ log.error(err, resp); } });
     })
     .catch((err) => {
+        log.error(err);
         indicateConfusion(slackBot, slackMessage);
-        bot.reply(slackMessage, `Something went wrong trying to retrieve that bill information: \`\`\`${JSON.stringify(err, null, 4)}\`\`\``);
+        bot.reply(slackMessage, `Something went wrong trying to retrieve that bill information: \`\`\`${err.message}\`\`\``);
     });
 });
 
