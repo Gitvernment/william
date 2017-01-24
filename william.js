@@ -19,8 +19,10 @@ const controller = Botkit.slackbot({ debug: false });
 const slackBot = controller.spawn({ token: process.env.WILLIAM_SLACK_TOKEN });
 
 // Query running
-controller.hears([/(what can you)?\w?tell me about (bill)?\w?([a-zA-Z]{2}[\d]{1,4})/], 'direct_message,direct_mention', (bot, slackMessage) => {
-    const billId = slackMessage.match[3];
+controller.hears([/(what)?\s?(can you)?\s?tell me about (bill)?\s?([a-zA-Z]{2}\s?[\d]{1,4})\??/], 'direct_message,direct_mention', (bot, slackMessage) => {
+    const billId = slackMessage.match[slackMessage.match.length-1].replace(' ', '');
+
+    log.info(`billId: ${billId}`);
 
     const query = `select * from bills where identifier = $1 and archived is null limit 1`;
     const args = [billId];
